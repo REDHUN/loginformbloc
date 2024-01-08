@@ -9,3 +9,5 @@ final class AuthLoginRequested extends AuthEvent {
 
   AuthLoginRequested({required this.email, required this.password});
 }
+
+final class AuthLogoutRequested extends AuthEvent {}

@@ -8,6 +8,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc() : super(AuthInitial()) {
     on<AuthLoginRequested>((event, emit) async {
       try {
+        emit(AuthLoading());
         final email = event.email;
         final password = event.password;
         if (password.length < 6) {
@@ -18,6 +19,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         });
       } catch (e) {
         return emit(AuthFailure(errMsg: e.toString()));
+      }
+    });
+    on<AuthLogoutRequested>((event, emit) async {
+      try {
+        emit(AuthLoading());
+        await Future.delayed(const Duration(seconds: 1), () {
+          return emit(AuthInitial());
+        });
+      } catch (e) {
+        emit(AuthFailure(errMsg: e.toString()));
       }
     });
   }
